@@ -15,7 +15,7 @@ from .electrical_calculator import ElectricalCalculator
 from .bim_modeling import BIMGenerator, ModelManager
 from .list_summary import SummaryGenerator, ExcelExporter
 from .routing import TaskScheduler
-from .openhuman_audit import OpenHumanAuditClient
+from .openhuman_audit import OpenHumanClient
 
 __all__ = [
     'Application',
@@ -40,5 +40,5 @@ __all__ = [
     'SummaryGenerator',
     'ExcelExporter',
     'TaskScheduler',
-    'OpenHumanAuditClient',
+    'OpenHumanClient',
 ]

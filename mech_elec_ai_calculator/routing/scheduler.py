@@ -9,7 +9,7 @@ from bim_modeling.bim_generator import BIMGenerator
 from bim_modeling.model_manager import ModelManager
 from list_summary.summary_generator import SummaryGenerator
 from list_summary.excel_exporter import ExcelExporter
-from openhuman_audit.audit_client import OpenHumanAuditClient
+from openhuman_audit.audit_client import OpenHumanClient  # renamed from OpenHumanAuditClient
 from rule_engine.rule_manager import RuleManager
 
 class TaskScheduler:
@@ -98,7 +98,7 @@ class TaskScheduler:
     
     def _step_audit(self, drawing_data: DrawingData, calculation: CalculationResult) -> Optional[AuditResult]:
         try:
-            audit_client = OpenHumanAuditClient()
+            audit_client = OpenHumanClient()
             
             self._app.logger.info("Starting AI audit")
             
