@@ -1,0 +1,158 @@
+{
+    "version": "1.0",
+    "description": "电气算量规则库 - 符合GB50303国标及地方定额",
+    "reserve_lengths": {
+        "cabinet": 1.5,
+        "outdoor": 2.0,
+        "vertical": 0.5,
+        "elbow": 0.3,
+        "manhole": 1.0,
+        "distribution_box": 0.8
+    },
+    "correction_factors": {
+        "cable_tray": 1.02,
+        "pipe": 1.05,
+        "wall": 1.03,
+        "ceiling": 1.02,
+        "direct_burial": 1.08
+    },
+    "device_classification": {
+        "cabinet": {
+            "device_type": "cabinet",
+            "keywords": ["配电柜", "开关柜", "控制柜", "进线柜", "出线柜", "配电箱", "电柜"]
+        },
+        "equipment": {
+            "device_type": "equipment",
+            "keywords": ["设备", "电机", "变压器", "风机", "水泵", "空调", "机组"]
+        },
+        "distribution_box": {
+            "device_type": "distribution_box",
+            "keywords": ["配电箱", "接线箱", "端子箱", "控制箱", "分线盒"]
+        },
+        "switch": {
+            "device_type": "switch",
+            "keywords": ["开关", "断路器", "空开", "熔断器", "隔离开关"]
+        },
+        "socket": {
+            "device_type": "socket",
+            "keywords": ["插座", "插孔", "电源插座"]
+        },
+        "lighting": {
+            "device_type": "lighting",
+            "keywords": ["灯", "照明", "射灯", "吊灯", "应急灯", "指示灯"]
+        },
+        "other": {
+            "device_type": "other",
+            "keywords": ["其他", "附件", "支架"]
+        }
+    },
+    "block_matching": {
+        "配电箱": {
+            "device_type": "distribution_box",
+            "match_type": "contains",
+            "quantity_factor": 1.0
+        },
+        "配电柜": {
+            "device_type": "cabinet",
+            "match_type": "contains",
+            "quantity_factor": 1.0
+        },
+        "开关": {
+            "device_type": "switch",
+            "match_type": "contains",
+            "quantity_factor": 1.0
+        },
+        "插座": {
+            "device_type": "socket",
+            "match_type": "contains",
+            "quantity_factor": 1.0
+        },
+        "灯具": {
+            "device_type": "lighting",
+            "match_type": "contains",
+            "quantity_factor": 1.0
+        },
+        "电机": {
+            "device_type": "equipment",
+            "match_type": "contains",
+            "quantity_factor": 1.0
+        }
+    },
+    "validation_thresholds": {
+        "min_cable_length": 0.1,
+        "max_cable_length": 10000.0,
+        "min_device_distance": 0.01,
+        "max_device_distance": 1000.0,
+        "layer_tolerance": 0.001,
+        "quantity_tolerance": 0.01
+    },
+    "quantity_rules": {
+        "device_count": {
+            "unit": "个",
+            "calculation_method": "count",
+            "description": "设备数量统计"
+        },
+        "cable_length": {
+            "unit": "米",
+            "calculation_method": "length",
+            "include_reserve": true,
+            "include_correction": true,
+            "description": "线缆长度计算"
+        },
+        "trunking_length": {
+            "unit": "米",
+            "calculation_method": "length",
+            "include_correction": true,
+            "description": "桥架长度计算"
+        },
+        "pipe_length": {
+            "unit": "米",
+            "calculation_method": "length",
+            "include_correction": true,
+            "description": "配管长度计算"
+        },
+        "accessories": {
+            "unit": "个",
+            "calculation_method": "derived",
+            "base_rule": "device_count",
+            "factor": 1.0,
+            "description": "辅材数量计算"
+        }
+    },
+    "layer_mapping": {
+        "设备层": ["设备", "装置", "器具"],
+        "线缆层": ["电缆", "电线", "导线"],
+        "桥架层": ["桥架", "线槽", "线槽架"],
+        "配管层": ["配管", "管道", "线管"],
+        "文字层": ["文字", "标注", "说明"]
+    },
+    "material_specifications": {
+        "cables": {
+            "BV": {"type": "power", "core_count": 1, "unit_weight": 0.01},
+            "BVR": {"type": "power", "core_count": 1, "unit_weight": 0.012},
+            "YJV": {"type": "power", "core_count": 4, "unit_weight": 0.15},
+            "YJLV": {"type": "power", "core_count": 4, "unit_weight": 0.1},
+            "KVV": {"type": "control", "core_count": 12, "unit_weight": 0.08},
+            "RVVP": {"type": "signal", "core_count": 4, "unit_weight": 0.02}
+        },
+        "pipes": {
+            "SC20": {"outer_diameter": 26.8, "wall_thickness": 2.0},
+            "SC25": {"outer_diameter": 33.5, "wall_thickness": 2.5},
+            "SC32": {"outer_diameter": 42.2, "wall_thickness": 2.5},
+            "PVC20": {"outer_diameter": 20.0, "wall_thickness": 1.5},
+            "PVC25": {"outer_diameter": 25.0, "wall_thickness": 1.8}
+        },
+        "trunking": {
+            "200x100": {"width": 0.2, "height": 0.1, "capacity": 0.02},
+            "300x150": {"width": 0.3, "height": 0.15, "capacity": 0.045},
+            "400x200": {"width": 0.4, "height": 0.2, "capacity": 0.08}
+        }
+    },
+    "cost_rates": {
+        "labor_rate": 180.0,
+        "material_rate": 1.0,
+        "machine_rate": 80.0,
+        "management_rate": 0.15,
+        "profit_rate": 0.08
+    }
+}
