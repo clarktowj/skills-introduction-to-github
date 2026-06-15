@@ -1,0 +1,71 @@
+# OpenHuman AI 审核模块配置文件示例
+# 保存为 config/audit_config.yaml
+
+# AI服务配置
+ai_service:
+  # 服务类型: openai / claude / local_rules
+  service_type: local_rules  # 默认使用本地规则引擎
+
+  # OpenAI配置 (service_type=openai时需要)
+  openai:
+    api_key: "your-openai-api-key"
+    api_base: "https://api.openai.com/v1"
+    model: "gpt-4"  # 或 gpt-4-turbo, gpt-3.5-turbo
+    temperature: 0.1
+    max_tokens: 4000
+    timeout: 60
+
+  # Claude配置 (service_type=claude时需要)
+  claude:
+    api_key: "your-claude-api-key"
+    model: "claude-3-opus-20240229"  # 或 claude-3-sonnet-20240229
+    max_tokens: 4000
+    timeout: 60
+
+# 本地规则引擎配置
+local_rules:
+  enabled: true
+  confidence_threshold: 0.5  # 只有高于此置信度的修正才会自动应用
+
+# 审核规则配置
+audit_rules:
+  # 设备数量检查
+  device_check:
+    enabled: true
+    min_confidence: 0.6
+
+  # 线缆长度合理性检查
+  cable_length_check:
+    enabled: true
+    max_single_length: 5000  # 单段线缆最大长度(米)
+    max_total_ratio_deviation: 0.5  # 与图纸差异最大比例
+
+  # 辅材完整性检查
+  accessory_check:
+    enabled: true
+    # 电缆头: 线缆数量 * 此系数
+    cable_head_factor: 2
+    # 接线端子: 设备数量 * 此系数
+    terminal_factor: 4
+
+  # 一致性检查
+  consistency_check:
+    enabled: true
+    # 有设备但无线缆时报警
+    require_cable_if_device: true
+    # 有配电柜但无线缆时报警
+    require_cable_if_cabinet: true
+
+# 自动修正配置
+auto_correction:
+  enabled: true
+  confidence_threshold: 0.6  # 置信度 >= 此值才会自动修正
+  allow_quantity_adjustment: true
+  allow_add_missing: true
+  allow_modify_classification: false  # 不自动修改分类
+
+# 报告配置
+report:
+  include_raw_response: false  # 是否在报告中包含AI原始响应
+  include_manual_review_items: true  # 是否包含需人工复核的项
+  output_format: "text"  # text / json
