@@ -214,18 +214,20 @@ class OpenHumanClient:
     ) -> AuditResult:
         """使用OpenAI GPT审核"""
         try:
-            import openai
-            openai.api_key = self._api_key
-            if self._api_base:
-                openai.api_base = self._api_base
+            from openai import OpenAI
+            client = OpenAI(
+                api_key=self._api_key,
+                base_url=self._api_base if self._api_base != 'https://api.openai.com/v1' else None,
+                timeout=self._timeout
+            )
         except ImportError:
-            raise ValidationError("openai package not installed. Run: pip install openai")
+            raise ValidationError("openai package not installed. Run: pip install openai>=1.0.0")
 
         # 构建prompt
         prompt = self._build_audit_prompt(drawing_info, quantity_list, rules_summary)
 
         # 调用API
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model=self._model,
             messages=[
                 {"role": "system", "content": self._get_system_prompt()},

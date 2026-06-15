@@ -1,0 +1,21 @@
+# AgnesAI API 配置文件
+# 保存为 config/agnesai_config.yaml
+
+ai_service:
+  service_type: openai  # 使用 OpenAI 兼容接口
+
+  openai:
+    api_key: "sk-o9HJZWD6ImlQzMcTUtll8AKghTl7ioDYlPQLwVHGuiJp6TMu"
+    api_base: "https://apihub.agnes-ai.com/v1"
+    model: "agnes-2.0-flash"
+    temperature: 0.1
+    max_tokens: 4000
+    timeout: 120
+
+# 当AI服务失败时，自动使用本地规则引擎作为fallback
+enable_fallback: true
+
+# 审核配置
+audit:
+  confidence_threshold: 0.5
+  auto_correction: true
