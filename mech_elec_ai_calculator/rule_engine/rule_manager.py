@@ -38,7 +38,14 @@ class RuleManager:
     def classify_device(self, block_name: str) -> Optional[str]:
         device_classification = self.get_rule('device_classification', {})
         
-        for device_type, config in device_classification.items():
+        # 按优先级排序 (priority 数字越小优先级越高)
+        sorted_configs = sorted(
+            device_classification.items(),
+            key=lambda x: x[1].get('priority', 99)
+        )
+        
+        # 按优先级依次匹配
+        for device_type, config in sorted_configs:
             keywords = config.get('keywords', [])
             for keyword in keywords:
                 if keyword.lower() in block_name.lower():

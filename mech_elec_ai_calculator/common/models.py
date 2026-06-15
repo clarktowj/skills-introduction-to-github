@@ -110,6 +110,7 @@ class DrawingData(BaseModel):
     texts: List[TextInfo] = Field(default_factory=list, description="文字信息")
     devices: List[DeviceModel] = Field(default_factory=list, description="识别到的设备")
     cables: List[CableModel] = Field(default_factory=list, description="识别到的线缆")
+    trunkings: List[Dict[str, Any]] = Field(default_factory=list, description="识别到的桥架")
     created_at: datetime = Field(default_factory=datetime.now)
     parsed_at: Optional[datetime] = Field(None, description="解析时间")
 

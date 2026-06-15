@@ -1,60 +1,71 @@
 {
-    "version": "1.0",
-    "description": "电气算量规则库 - 符合GB50303国标及地方定额",
+    "version": "1.1",
+    "description": "电气算量规则库 - 符合GB50303国标及地方定额 (优化版)",
     "reserve_lengths": {
         "cabinet": 1.5,
         "outdoor": 2.0,
         "vertical": 0.5,
         "elbow": 0.3,
         "manhole": 1.0,
-        "distribution_box": 0.8
+        "distribution_box": 0.8,
+        "equipment_terminal": 0.3
     },
     "correction_factors": {
         "cable_tray": 1.02,
         "pipe": 1.05,
         "wall": 1.03,
         "ceiling": 1.02,
-        "direct_burial": 1.08
+        "direct_burial": 1.08,
+        "horizontal": 1.0,
+        "vertical_rise": 1.05,
+        "unknown": 1.03
     },
     "device_classification": {
+        "distribution_box": {
+            "device_type": "distribution_box",
+            "keywords": ["配电箱", "接线箱", "端子箱", "控制箱", "分线盒", "AL", "AP", "ALE"],
+            "priority": 1
+        },
         "cabinet": {
             "device_type": "cabinet",
-            "keywords": ["配电柜", "开关柜", "控制柜", "进线柜", "出线柜", "配电箱", "电柜"]
+            "keywords": ["配电柜", "开关柜", "控制柜", "进线柜", "出线柜", "GCS", "GCK", "MNS"],
+            "priority": 2
         },
         "equipment": {
             "device_type": "equipment",
-            "keywords": ["设备", "电机", "变压器", "风机", "水泵", "空调", "机组"]
-        },
-        "distribution_box": {
-            "device_type": "distribution_box",
-            "keywords": ["配电箱", "接线箱", "端子箱", "控制箱", "分线盒"]
+            "keywords": ["设备", "电机", "变压器", "风机", "水泵", "空调", "机组"],
+            "priority": 3
         },
         "switch": {
             "device_type": "switch",
-            "keywords": ["开关", "断路器", "空开", "熔断器", "隔离开关"]
+            "keywords": ["开关", "断路器", "空开", "熔断器", "隔离开关"],
+            "priority": 4
         },
         "socket": {
             "device_type": "socket",
-            "keywords": ["插座", "插孔", "电源插座"]
+            "keywords": ["插座", "插孔", "电源插座"],
+            "priority": 5
         },
         "lighting": {
             "device_type": "lighting",
-            "keywords": ["灯", "照明", "射灯", "吊灯", "应急灯", "指示灯"]
+            "keywords": ["灯", "照明", "射灯", "吊灯", "应急灯", "指示灯"],
+            "priority": 6
         },
         "other": {
             "device_type": "other",
-            "keywords": ["其他", "附件", "支架"]
+            "keywords": ["其他", "附件", "支架"],
+            "priority": 99
         }
     },
     "block_matching": {
         "配电箱": {
             "device_type": "distribution_box",
-            "match_type": "contains",
+            "match_type": "exact",
             "quantity_factor": 1.0
         },
         "配电柜": {
             "device_type": "cabinet",
-            "match_type": "contains",
+            "match_type": "exact",
             "quantity_factor": 1.0
         },
         "开关": {
@@ -76,6 +87,32 @@
             "device_type": "equipment",
             "match_type": "contains",
             "quantity_factor": 1.0
+        }
+    },
+    "cable_identification": {
+        "by_layer": {
+            "电缆": "power",
+            "电缆层": "power",
+            "线缆": "power",
+            "线缆层": "power",
+            "控制电缆": "control",
+            "信号线": "signal",
+            "通信线": "communication"
+        },
+        "by_color": {
+            "1": {"type": "power", "name": "主电缆 (红色)"},
+            "3": {"type": "power", "name": "主电缆 (绿色)"},
+            "5": {"type": "power", "name": "主电缆 (蓝色)"},
+            "2": {"type": "control", "name": "控制电缆 (黄色)"},
+            "4": {"type": "signal", "name": "信号电缆 (青色)"},
+            "6": {"type": "communication", "name": "通信线 (品红色)"},
+            "7": {"type": "power", "name": "通用电缆 (白色)"}
+        },
+        "by_line_type": {
+            "CONTINUOUS": "direct",
+            "DASHED": "pipe",
+            "PHANTOM": "ceiling",
+            "CENTER": "cable_tray"
         }
     },
     "validation_thresholds": {
@@ -120,20 +157,20 @@
         }
     },
     "layer_mapping": {
-        "设备层": ["设备", "装置", "器具"],
-        "线缆层": ["电缆", "电线", "导线"],
+        "设备层": ["设备", "装置", "器具", "柜", "箱"],
+        "电缆层": ["电缆", "电线", "导线", "线缆"],
         "桥架层": ["桥架", "线槽", "线槽架"],
         "配管层": ["配管", "管道", "线管"],
-        "文字层": ["文字", "标注", "说明"]
+        "文字标注": ["文字", "标注", "说明"]
     },
     "material_specifications": {
         "cables": {
-            "BV": {"type": "power", "core_count": 1, "unit_weight": 0.01},
-            "BVR": {"type": "power", "core_count": 1, "unit_weight": 0.012},
-            "YJV": {"type": "power", "core_count": 4, "unit_weight": 0.15},
-            "YJLV": {"type": "power", "core_count": 4, "unit_weight": 0.1},
-            "KVV": {"type": "control", "core_count": 12, "unit_weight": 0.08},
-            "RVVP": {"type": "signal", "core_count": 4, "unit_weight": 0.02}
+            "BV": {"type": "power", "core_count": 1, "unit_weight": 0.01, "description": "铜芯塑料绝缘线"},
+            "BVR": {"type": "power", "core_count": 1, "unit_weight": 0.012, "description": "铜芯塑料绝缘软线"},
+            "YJV": {"type": "power", "core_count": 4, "unit_weight": 0.15, "description": "交联聚乙烯绝缘聚氯乙烯护套电缆"},
+            "YJLV": {"type": "power", "core_count": 4, "unit_weight": 0.1, "description": "铝芯交联聚乙烯绝缘聚氯乙烯护套电缆"},
+            "KVV": {"type": "control", "core_count": 12, "unit_weight": 0.08, "description": "控制电缆"},
+            "RVVP": {"type": "signal", "core_count": 4, "unit_weight": 0.02, "description": "屏蔽软线"}
         },
         "pipes": {
             "SC20": {"outer_diameter": 26.8, "wall_thickness": 2.0},
@@ -154,5 +191,21 @@
         "machine_rate": 80.0,
         "management_rate": 0.15,
         "profit_rate": 0.08
+    },
+    "unit_prices": {
+        "cabinet": 5000.0,
+        "distribution_box": 800.0,
+        "switch": 50.0,
+        "socket": 30.0,
+        "lighting": 150.0,
+        "equipment": 3000.0,
+        "cable_power": 100.0,
+        "cable_control": 50.0,
+        "cable_signal": 30.0,
+        "trunking": 300.0,
+        "pipe": 150.0,
+        "cable_terminal": 50.0,
+        "wiring_terminal": 5.0,
+        "other": 100.0
     }
 }
