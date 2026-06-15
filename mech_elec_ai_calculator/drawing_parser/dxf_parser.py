@@ -37,14 +37,19 @@ class DXFParser:
             raise ParseError(f"Failed to parse DXF file: {str(e)}")
     
     def _extract_layers(self, doc: ezdxf.Drawing, drawing_data: DrawingData) -> None:
-        for layer_name, layer in doc.layers.items():
-            drawing_data.layers.append(LayerInfo(
-                name=layer_name,
-                color=str(layer.color),
-                line_type=layer.linetype,
-                visible=not layer.is_off,
-                locked=layer.is_locked
-            ))
+        try:
+            for layer in doc.layers:
+                layer_name = str(layer)
+                drawing_data.layers.append(LayerInfo(
+                    name=layer_name,
+                    color=str(layer.dxf.color) if hasattr(layer, 'dxf') else '7',
+                    line_type=str(layer.dxf.linetype) if hasattr(layer, 'dxf') else '',
+                    visible=True,
+                    locked=False
+                ))
+        except Exception:
+            # 如果无法获取图层信息，忽略错误继续解析
+            pass
     
     def _extract_blocks(self, msp: ezdxf.layouts.Modelspace, drawing_data: DrawingData) -> None:
         for block_ref in msp.query('INSERT'):
@@ -134,6 +139,7 @@ class DXFParser:
                 
                 drawing_data.cables.append(CableModel(
                     model='Unknown',
+                    type='power',
                     start_point=start_point,
                     end_point=end_point,
                     length=self._calculate_distance(start_point, end_point),

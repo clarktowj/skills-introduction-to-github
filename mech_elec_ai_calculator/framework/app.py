@@ -19,11 +19,12 @@ class Application:
             return
         
         self._config_manager = ConfigManager(config_path)
-        self._logger = Logger(self._config_manager.get_log_config())
+        self._config_manager.load_config()
+        
+        self._logger = Logger(self._config_manager.get('logging', {}))
         self._logger.info("Application initializing...")
         
         try:
-            self._config_manager.load_config()
             self._logger.info("Configuration loaded successfully")
             
             self._setup_directories()
