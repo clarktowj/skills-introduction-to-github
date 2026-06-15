@@ -1,0 +1,258 @@
+{
+  "components": [
+    {
+      "id": "BIM-0001-e3a9ce",
+      "name": "配电柜 低压配电柜 GGD",
+      "type": "cabinet",
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "dimensions": {
+        "w": 0.8,
+        "d": 0.6,
+        "h": 2.0
+      },
+      "color": "#FF6B6B",
+      "quantity": 3.0,
+      "total_price": 45000.0,
+      "unit": "个",
+      "unit_price": 15000.0,
+      "quantity_id": "00523d62-7d38-4af3-b880-9935a327c4d2"
+    },
+    {
+      "id": "BIM-0002-9f6ca3",
+      "name": "配电箱 AL-1F",
+      "type": "distribution_box",
+      "position": {
+        "x": 1.8,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "dimensions": {
+        "w": 0.4,
+        "d": 0.25,
+        "h": 0.5
+      },
+      "color": "#FFD93D",
+      "quantity": 5.0,
+      "total_price": 25000.0,
+      "unit": "个",
+      "unit_price": 5000.0,
+      "quantity_id": "01d56712-0ead-4546-880c-0e88e17ac229"
+    },
+    {
+      "id": "BIM-0003-fe02d0",
+      "name": "变压器 SCB14-800kVA",
+      "type": "equipment",
+      "position": {
+        "x": 3.2,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "dimensions": {
+        "w": 1.0,
+        "d": 1.0,
+        "h": 1.0
+      },
+      "color": "#6BCB77",
+      "quantity": 1.0,
+      "total_price": 120000.0,
+      "unit": "台",
+      "unit_price": 120000.0,
+      "quantity_id": "87310dca-0185-40e4-9bf5-ac56e77ada04"
+    },
+    {
+      "id": "BIM-0004-e23efa",
+      "name": "电动机控制中心 MCC",
+      "type": "equipment",
+      "position": {
+        "x": 5.2,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "dimensions": {
+        "w": 1.0,
+        "d": 1.0,
+        "h": 1.0
+      },
+      "color": "#6BCB77",
+      "quantity": 2.0,
+      "total_price": 160000.0,
+      "unit": "个",
+      "unit_price": 80000.0,
+      "quantity_id": "5d5ab7a1-fd65-4313-9902-05d61d09d69f"
+    },
+    {
+      "id": "BIM-0005-8ac823",
+      "name": "开关 2P 16A",
+      "type": "equipment",
+      "position": {
+        "x": 7.2,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "dimensions": {
+        "w": 0.1,
+        "d": 0.05,
+        "h": 0.1
+      },
+      "color": "#6BCB77",
+      "quantity": 40.0,
+      "total_price": 3200.0,
+      "unit": "个",
+      "unit_price": 80.0,
+      "quantity_id": "43c46925-3377-49e1-a205-48f4ba37007b"
+    },
+    {
+      "id": "BIM-0006-7a6994",
+      "name": "电力电缆 YJV-4x95",
+      "type": "cable",
+      "position": {
+        "x": 0.0,
+        "y": 2.0,
+        "z": 1.5
+      },
+      "dimensions": {
+        "w": 520.0,
+        "d": 0.05,
+        "h": 0.05
+      },
+      "color": "#845EC2",
+      "quantity": 520.0,
+      "total_price": 145600.0,
+      "unit": "米",
+      "unit_price": 280.0,
+      "quantity_id": "5b43ca81-4b1a-4b62-9880-8249656aadec"
+    },
+    {
+      "id": "BIM-0007-80cb40",
+      "name": "控制电缆 KVV-4x2.5",
+      "type": "cable",
+      "position": {
+        "x": 2.0,
+        "y": 2.0,
+        "z": 1.5
+      },
+      "dimensions": {
+        "w": 820.0,
+        "d": 0.05,
+        "h": 0.05
+      },
+      "color": "#845EC2",
+      "quantity": 820.0,
+      "total_price": 18040.0,
+      "unit": "米",
+      "unit_price": 22.0,
+      "quantity_id": "a97378d4-71b8-41fa-bbfc-d2e8c6a8eac0"
+    },
+    {
+      "id": "BIM-0008-c974c9",
+      "name": "矿物绝缘电缆 BTTZ-1x25",
+      "type": "cable",
+      "position": {
+        "x": 4.0,
+        "y": 2.0,
+        "z": 1.5
+      },
+      "dimensions": {
+        "w": 160.0,
+        "d": 0.05,
+        "h": 0.05
+      },
+      "color": "#845EC2",
+      "quantity": 160.0,
+      "total_price": 28800.0,
+      "unit": "米",
+      "unit_price": 180.0,
+      "quantity_id": "3e5a03cd-f73d-4f50-94bf-35488ec3f756"
+    },
+    {
+      "id": "BIM-0009-febade",
+      "name": "桥架 200x100 镀锌",
+      "type": "cable_tray",
+      "position": {
+        "x": 0.0,
+        "y": 3.5,
+        "z": 0.0
+      },
+      "dimensions": {
+        "w": 10.0,
+        "d": 0.3,
+        "h": 0.1
+      },
+      "color": "#A3A380",
+      "quantity": 180.0,
+      "total_price": 32400.0,
+      "unit": "米",
+      "unit_price": 180.0,
+      "quantity_id": "d7fe7794-2f89-40c7-9a12-1c020628c74a"
+    },
+    {
+      "id": "BIM-0010-7ebe87",
+      "name": "桥架 100x100 镀锌",
+      "type": "cable_tray",
+      "position": {
+        "x": 10.5,
+        "y": 3.5,
+        "z": 0.0
+      },
+      "dimensions": {
+        "w": 10.0,
+        "d": 0.3,
+        "h": 0.1
+      },
+      "color": "#A3A380",
+      "quantity": 180.0,
+      "total_price": 32400.0,
+      "unit": "米",
+      "unit_price": 180.0,
+      "quantity_id": "3cfd7627-58ee-4706-9266-ebb3244d4b51"
+    },
+    {
+      "id": "BIM-0011-d601a4",
+      "name": "配管 SC40 镀锌钢管",
+      "type": "pipe",
+      "position": {
+        "x": 0.0,
+        "y": 3.2,
+        "z": 0.0
+      },
+      "dimensions": {
+        "w": 10.0,
+        "d": 0.05,
+        "h": 0.05
+      },
+      "color": "#FF9F45",
+      "quantity": 220.0,
+      "total_price": 6160.0,
+      "unit": "米",
+      "unit_price": 28.0,
+      "quantity_id": "9498e770-e1f5-4b4a-9c71-d487a9b7be19"
+    },
+    {
+      "id": "BIM-0012-8e2b1d",
+      "name": "配管 SC25 镀锌钢管",
+      "type": "pipe",
+      "position": {
+        "x": 10.5,
+        "y": 3.2,
+        "z": 0.0
+      },
+      "dimensions": {
+        "w": 10.0,
+        "d": 0.05,
+        "h": 0.05
+      },
+      "color": "#FF9F45",
+      "quantity": 220.0,
+      "total_price": 6160.0,
+      "unit": "米",
+      "unit_price": 28.0,
+      "quantity_id": "4d2eafad-7286-4621-b503-ad65b52d3e21"
+    }
+  ],
+  "total_count": 12,
+  "generated_at": "2026-06-15T17:02:56.707543"
+}

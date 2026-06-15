@@ -17,18 +17,15 @@
   3. 四类拆分: 甲供设备 / 甲供材料 / 乙供 / 劳务
   4. 输出: 拆分结果 (SplitResult)
 
-示例
-"""
-{
-  'owner_equipment': [...],   # 甲供设备
-  'owner_materials': [...], # 甲供材料
-  'contractor': [...],      # 乙供 (含辅材/设备)
-  'labor': [...],           # 劳务工日
-  'summary': {
-    'total': [...], ...
+示例结构:
+  {
+    'owner_equipment': [...],   # 甲供设备
+    'owner_materials': [...],   # 甲供材料
+    'contractor': [...],        # 乙供 (含辅材/设备)
+    'labor': [...],             # 劳务工日
+    'summary': { ... }
   }
-}
-
+"""
 
 import os
 import json
@@ -354,7 +351,7 @@ class MaterialLaborSplitter:
         # 写每个表
         write_sheet('甲供设备', result.owner_equipment)
         write_sheet('甲供材料', result.owner_materials)
-        write_sheet('乙供材/设备', result.contractor)
+        write_sheet('乙供材-设备', result.contractor)
         write_sheet('劳务用量', result.labor)
 
         # 汇总表
@@ -377,7 +374,7 @@ class MaterialLaborSplitter:
             ws.cell(row=i, column=4,
                      value=round(price / s['grand_total'] * 100, 1) if s['grand_total'] else 0)
         ws.cell(row=6, column=1, value='总计').font = Font(bold=True)
-        ws.cell(row=6, column=3, value=round(s['grand_total'], 2)).font = Font(bold=True))
+        ws.cell(row=6, column=3, value=round(s['grand_total'], 2)).font = Font(bold=True)
         ws.column_dimensions['A'].width = 22
         ws.column_dimensions['B'].width = 10
         ws.column_dimensions['C'].width = 15
