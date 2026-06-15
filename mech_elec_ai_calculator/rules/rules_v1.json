@@ -1,128 +1,481 @@
 {
-    "version": "1.1",
-    "description": "电气算量规则库 - 符合GB50303国标及地方定额 (优化版)",
+    "version": "2.0",
+    "description": "电气算量规则库 - 完善DXF识别规则 (强化版)",
+
     "reserve_lengths": {
         "cabinet": 1.5,
+        "distribution_box": 0.8,
         "outdoor": 2.0,
         "vertical": 0.5,
         "elbow": 0.3,
         "manhole": 1.0,
-        "distribution_box": 0.8,
-        "equipment_terminal": 0.3
+        "equipment_terminal": 0.3,
+        "cable_joint": 0.5
     },
+
     "correction_factors": {
         "cable_tray": 1.02,
         "pipe": 1.05,
         "wall": 1.03,
         "ceiling": 1.02,
         "direct_burial": 1.08,
-        "horizontal": 1.0,
-        "vertical_rise": 1.05,
+        "trunking": 1.02,
         "unknown": 1.03
     },
+
     "device_classification": {
-        "distribution_box": {
-            "device_type": "distribution_box",
-            "keywords": ["配电箱", "接线箱", "端子箱", "控制箱", "分线盒", "AL", "AP", "ALE"],
-            "priority": 1
-        },
         "cabinet": {
             "device_type": "cabinet",
-            "keywords": ["配电柜", "开关柜", "控制柜", "进线柜", "出线柜", "GCS", "GCK", "MNS"],
-            "priority": 2
+            "priority": 1,
+            "confidence_threshold": 0.7,
+            "keywords": [
+                "配电柜", "开关柜", "控制柜", "进线柜", "出线柜",
+                "MCC", "GGD", "GCS", "GCK", "PGL",
+                "XL-21", "XL21", "XL21柜",
+                "低压柜", "高压柜", "中置柜", "环网柜",
+                "AP柜", "AA柜", "AH柜",
+                "Electrical Panel", "Switchgear", "Distribution Board"
+            ],
+            "name_patterns": [
+                "P\\d{1,3}", "AP\\d{1,3}", "AA\\d{1,3}", "AH\\d{1,3}",
+                "AL\\d{1,3}", "AT\\d{1,3}"
+            ],
+            "block_keywords": [
+                "P1", "P2", "P3", "AP1", "AP2", "AP3", "1P", "2P", "3P",
+                "柜", "panel", "cabinet", "switchboard"
+            ]
         },
-        "equipment": {
-            "device_type": "equipment",
-            "keywords": ["设备", "电机", "变压器", "风机", "水泵", "空调", "机组"],
-            "priority": 3
+        "distribution_box": {
+            "device_type": "distribution_box",
+            "priority": 1,
+            "confidence_threshold": 0.6,
+            "keywords": [
+                "配电箱", "分配电箱", "终端配电箱",
+                "照明配电箱", "动力配电箱", "应急配电箱",
+                "AL", "ALE", "AL-E", "ALE应急",
+                "接线箱", "端子箱", "分线盒", "分线箱",
+                "Distribution Box", "DB", "Sub-panel"
+            ],
+            "name_patterns": [
+                "AL\\d{1,3}", "ALE\\d{1,3}", "AL\\d{1,3}-\\d{1,3}"
+            ],
+            "block_keywords": [
+                "AL", "ALE", "分配", "分线", "接线", "terminal", "box"
+            ]
         },
         "switch": {
             "device_type": "switch",
-            "keywords": ["开关", "断路器", "空开", "熔断器", "隔离开关"],
-            "priority": 4
+            "priority": 2,
+            "confidence_threshold": 0.6,
+            "keywords": [
+                "开关", "断路器", "空开", "隔离开关",
+                "MCB", "RCCB", "RCBO", "MCCB", "ACB",
+                "单极开关", "双极开关", "三极开关",
+                "1P", "2P", "3P", "4P",
+                "Switch", "Circuit Breaker", "Breaker"
+            ],
+            "name_patterns": [
+                "K\\d{1,3}", "QF\\d{1,3}", "QS\\d{1,3}", "SA\\d{1,3}"
+            ],
+            "block_keywords": [
+                "开关", "SW", "switch", "breaker"
+            ]
         },
         "socket": {
             "device_type": "socket",
-            "keywords": ["插座", "插孔", "电源插座"],
-            "priority": 5
+            "priority": 3,
+            "confidence_threshold": 0.5,
+            "keywords": [
+                "插座", "插孔", "电源插座",
+                "单相插座", "三相插座",
+                "五孔插座", "三孔插座", "两孔插座",
+                "防水插座", "防爆插座",
+                "Socket", "Outlet", "Receptacle",
+                "插", "OUT"
+            ],
+            "name_patterns": [
+                "XS\\d{1,3}", "X\\d{1,3}"
+            ],
+            "block_keywords": [
+                "插座", "插", "sock", "outlet"
+            ]
         },
         "lighting": {
             "device_type": "lighting",
-            "keywords": ["灯", "照明", "射灯", "吊灯", "应急灯", "指示灯"],
-            "priority": 6
+            "priority": 3,
+            "confidence_threshold": 0.5,
+            "keywords": [
+                "灯", "照明", "射灯", "吊灯", "筒灯", "日光灯", "荧光灯",
+                "应急灯", "指示灯", "疏散指示灯", "安全出口灯",
+                "吸顶灯", "壁灯", "台灯", "地脚灯",
+                "Light", "Lamp", "Fixture", "Lighting"
+            ],
+            "name_patterns": [
+                "L\\d{1,3}", "E\\d{1,3}", "EL\\d{1,3}"
+            ],
+            "block_keywords": [
+                "灯", "light", "lamp", "照明"
+            ]
+        },
+        "equipment": {
+            "device_type": "equipment",
+            "priority": 2,
+            "confidence_threshold": 0.7,
+            "keywords": [
+                "设备", "电机", "马达", "电动机",
+                "变压器", "风机", "水泵", "空调", "机组",
+                "M", "Motor", "Pump", "Fan", "Chiller",
+                "冷却塔", "空压机", "压缩机",
+                "水泵房", "风机房", "机房设备"
+            ],
+            "name_patterns": [
+                "M\\d{1,3}", "M-\\d{1,3}",
+                "T\\d{1,3}", "TM\\d{1,3}",
+                "YB\\d{1,3}", "Y\\d{1,3}"
+            ],
+            "block_keywords": [
+                "M", "设备", "电机", "马达", "motor", "pump", "fan"
+            ]
+        },
+        "meter": {
+            "device_type": "other",
+            "priority": 2,
+            "confidence_threshold": 0.6,
+            "keywords": [
+                "电表", "电能表", "计量表", "电度表",
+                "电流表", "电压表", "功率表",
+                "Meter", "kWh", "CT", "PT"
+            ],
+            "name_patterns": [
+                "PJ\\d{1,3}", "PA\\d{1,3}", "PV\\d{1,3}"
+            ],
+            "block_keywords": [
+                "电表", "meter", "计量"
+            ]
         },
         "other": {
             "device_type": "other",
-            "keywords": ["其他", "附件", "支架"],
-            "priority": 99
+            "priority": 99,
+            "confidence_threshold": 0.3,
+            "keywords": [
+                "其他", "附件", "支架", "桥架支撑", "预埋件"
+            ],
+            "name_patterns": [],
+            "block_keywords": []
         }
     },
-    "block_matching": {
-        "配电箱": {
-            "device_type": "distribution_box",
-            "match_type": "exact",
-            "quantity_factor": 1.0
-        },
-        "配电柜": {
-            "device_type": "cabinet",
-            "match_type": "exact",
-            "quantity_factor": 1.0
-        },
-        "开关": {
-            "device_type": "switch",
-            "match_type": "contains",
-            "quantity_factor": 1.0
-        },
-        "插座": {
-            "device_type": "socket",
-            "match_type": "contains",
-            "quantity_factor": 1.0
-        },
-        "灯具": {
-            "device_type": "lighting",
-            "match_type": "contains",
-            "quantity_factor": 1.0
-        },
-        "电机": {
-            "device_type": "equipment",
-            "match_type": "contains",
-            "quantity_factor": 1.0
-        }
-    },
+
     "cable_identification": {
-        "by_layer": {
-            "电缆": "power",
-            "电缆层": "power",
-            "线缆": "power",
-            "线缆层": "power",
-            "控制电缆": "control",
-            "信号线": "signal",
-            "通信线": "communication"
+        "power": {
+            "cable_type": "power",
+            "priority": 1,
+            "keywords": [
+                "电缆", "线缆", "电力电缆", "电源线",
+                "WDZ", "YJV", "VV", "BV", "BVR", "YJLV",
+                "电力", "power", "cable"
+            ],
+            "model_patterns": [
+                "YJV-?\\d{1,3}[×xX*]\\d{1,3}[+]?\\d{1,3}",
+                "YJLV-?\\d{1,3}[×xX*]\\d{1,3}",
+                "VV-?\\d{1,3}[×xX*]\\d{1,3}",
+                "BV-?\\d{1,3}",
+                "BVR-?\\d{1,3}",
+                "WDZ[NY]-YJV-?\\d{1,3}[×xX*]\\d{1,3}"
+            ],
+            "colors": ["1", "3", "5", "6", "7"],
+            "line_types": ["CONTINUOUS", "DASHED", "CENTER"]
         },
-        "by_color": {
-            "1": {"type": "power", "name": "主电缆 (红色)"},
-            "3": {"type": "power", "name": "主电缆 (绿色)"},
-            "5": {"type": "power", "name": "主电缆 (蓝色)"},
-            "2": {"type": "control", "name": "控制电缆 (黄色)"},
-            "4": {"type": "signal", "name": "信号电缆 (青色)"},
-            "6": {"type": "communication", "name": "通信线 (品红色)"},
-            "7": {"type": "power", "name": "通用电缆 (白色)"}
+        "control": {
+            "cable_type": "control",
+            "priority": 2,
+            "keywords": [
+                "控制电缆", "控制线", "控制线缆",
+                "KVV", "KVVP", "RVV",
+                "control", "signal"
+            ],
+            "model_patterns": [
+                "KVV-?\\d{1,3}[×xX*]\\d{1,3}",
+                "KVVP-?\\d{1,3}[×xX*]\\d{1,3}",
+                "RVV-?\\d{1,3}[×xX*]\\d{1,3}"
+            ],
+            "colors": ["2", "4", "7"],
+            "line_types": ["DASHED", "PHANTOM"]
         },
-        "by_line_type": {
-            "CONTINUOUS": "direct",
-            "DASHED": "pipe",
-            "PHANTOM": "ceiling",
-            "CENTER": "cable_tray"
+        "signal": {
+            "cable_type": "signal",
+            "priority": 3,
+            "keywords": [
+                "信号电缆", "信号线", "通信线",
+                "网线", "光缆", "光纤",
+                "UTP", "STP", "Cat5", "Cat6", "Cat7"
+            ],
+            "model_patterns": [],
+            "colors": ["4", "6"],
+            "line_types": ["PHANTOM", "DASHED"]
+        },
+        "communication": {
+            "cable_type": "communication",
+            "priority": 3,
+            "keywords": [
+                "通信电缆", "电话线", "电视线",
+                "RJ45", "RJ11",
+                "Cat", "UTP", "FTP"
+            ],
+            "model_patterns": [],
+            "colors": ["6", "4"],
+            "line_types": ["DASHED", "DOTTED"]
         }
     },
+
+    "trunking_identification": {
+        "trunking": {
+            "priority": 1,
+            "keywords": [
+                "桥架", "电缆桥架", "线槽", "金属线槽",
+                "梯式桥架", "槽式桥架", "托盘桥架",
+                "CT", "CT-", "TR",
+                "Cable Tray", "Cable Trunking", "Trunking"
+            ],
+            "layer_keywords": [
+                "桥架", "线槽", "CT", "TR", "Tray", "trunking"
+            ],
+            "line_types": ["CONTINUOUS", "DASHED"],
+            "colors": ["3", "5", "7"]
+        },
+        "pipe": {
+            "priority": 2,
+            "keywords": [
+                "配管", "电线管", "镀锌管", "钢管", "PVC管",
+                "SC", "PC", "MT", "JDG", "KBG",
+                "Pipe", "Tube", "Conduit"
+            ],
+            "layer_keywords": [
+                "配管", "线管", "管路", "SC", "PC", "pipe", "conduit"
+            ],
+            "line_types": ["DASHED", "CENTER"],
+            "colors": ["1", "3", "7"]
+        }
+    },
+
+    "layer_filter": {
+        "enabled": true,
+        "description": "电气图层识别规则 - 用于过滤无关图层",
+
+        "electrical_layers": {
+            "description": "电气专业图层",
+            "keywords": [
+                "电气", "电", "ELE", "ELECTRIC", "EL",
+                "E", "EE", "EP", "EA", "EM",
+                "动力", "照明", "弱电", "配电",
+                "POWER", "LIGHT", "SIGNAL",
+                "设备", "装置",
+                "EQUIP", "DEVICE", "FIXTURE"
+            ],
+            "layer_prefixes": [
+                "E-", "E_", "E/",
+                "EL-", "EL_", "EP-", "EP_",
+                "电气-", "电气_",
+                "A-", "0", "100"
+            ]
+        },
+
+        "equipment_layers": {
+            "description": "设备/装置图层",
+            "keywords": [
+                "设备", "装置", "柜", "箱", "盘",
+                "EQUIP", "DEVICE", "PANEL", "CABINET",
+                "PAN", "EQ"
+            ],
+            "layer_prefixes": [
+                "设备", "装置", "柜", "EQ-", "PANEL-"
+            ]
+        },
+
+        "cable_layers": {
+            "description": "线缆图层",
+            "keywords": [
+                "电缆", "线缆", "电线", "导线",
+                "CABLE", "WIRE", "LINE",
+                "缆", "线"
+            ],
+            "layer_prefixes": [
+                "电缆", "线缆", "CABLE-", "WIRE-"
+            ]
+        },
+
+        "trunking_layers": {
+            "description": "桥架图层",
+            "keywords": [
+                "桥架", "线槽",
+                "TRAY", "TRUNKING", "CT",
+                "CTRAY", "TRNK"
+            ],
+            "layer_prefixes": [
+                "桥架", "线槽", "CT-", "TR-"
+            ]
+        },
+
+        "pipe_layers": {
+            "description": "配管图层",
+            "keywords": [
+                "配管", "管路", "线管", "管道",
+                "PIPE", "CONDUIT", "TUBE",
+                "SC", "PC", "MT"
+            ],
+            "layer_prefixes": [
+                "配管", "管路", "PIPE-", "SC-", "PC-"
+            ]
+        },
+
+        "lighting_layers": {
+            "description": "照明图层",
+            "keywords": [
+                "照明", "灯", "灯具",
+                "LIGHT", "LAMP", "FIXTURE", "LG"
+            ],
+            "layer_prefixes": [
+                "照明", "灯", "LIGHT-", "LG-"
+            ]
+        },
+
+        "annotation_layers": {
+            "description": "标注/注释图层",
+            "keywords": [
+                "标注", "注释", "文字", "说明",
+                "NOTE", "TEXT", "DIM", "ANNO",
+                "尺寸", "编号"
+            ],
+            "layer_prefixes": [
+                "标注", "注释", "文字", "NOTE-", "TEXT-"
+            ]
+        },
+
+        "exclude_layers": {
+            "description": "需排除的非电气图层",
+            "keywords": [
+                "建筑", "结构", "给排水", "暖通", "空调",
+                "ARCH", "STRUCT", "PLUMB", "HVAC",
+                "柱子", "梁", "板", "墙",
+                "COLUMN", "BEAM", "WALL", "SLAB",
+                "楼梯", "门", "窗",
+                "STAIR", "DOOR", "WINDOW",
+                "轴线", "轴网", "GRID",
+                "尺寸", "DIM", "DIMENSION",
+                "标高", "ELEV"
+            ],
+            "layer_prefixes": [
+                "建筑", "结构", "给水", "排水", "暖通",
+                "A-", "S-", "P-", "H-", "G-", "D-",
+                "AXIS", "GRID"
+            ]
+        }
+    },
+
+    "fuzzy_matching": {
+        "enabled": true,
+        "description": "模糊匹配参数配置",
+
+        "text_normalization": {
+            "remove_spaces": true,
+            "remove_special_chars": true,
+            "to_lowercase": true,
+            "remove_parentheses_content": true,
+            "special_chars_to_remove": "()[]{}<>【】（）『』「」『』、\\|.,;:!！？?#@*&^%$"
+        },
+
+        "keyword_matching": {
+            "exact_match_weight": 1.0,
+            "contains_match_weight": 0.8,
+            "partial_match_weight": 0.5,
+            "min_match_length": 2
+        },
+
+        "similarity_threshold": {
+            "block_name": 0.6,
+            "layer_name": 0.5,
+            "text_content": 0.7,
+            "cable_model": 0.6
+        },
+
+        "multi_keyword_boost": {
+            "threshold": 2,
+            "boost_factor": 1.3,
+            "max_boost": 2.0
+        },
+
+        "abbreviation_expansion": {
+            "enabled": true,
+            "mappings": {
+                "P": "配电柜",
+                "AP": "动力配电柜",
+                "AL": "照明配电箱",
+                "ALE": "应急照明配电箱",
+                "AT": "双电源切换箱",
+                "AA": "高压配电柜",
+                "AH": "高压配电柜",
+                "M": "电机",
+                "K": "开关",
+                "L": "灯",
+                "E": "应急照明",
+                "MCC": "电机控制中心",
+                "GGD": "低压配电柜",
+                "GCS": "抽出式开关柜",
+                "GCK": "抽出式开关柜"
+            }
+        },
+
+        "chinese_number_conversion": {
+            "enabled": true,
+            "mappings": {
+                "一": "1", "二": "2", "三": "3", "四": "4", "五": "5",
+                "六": "6", "七": "7", "八": "8", "九": "9", "十": "10",
+                "壹": "1", "贰": "2", "叁": "3", "肆": "4", "伍": "5",
+                "陆": "6", "柒": "7", "捌": "8", "玖": "9", "拾": "10"
+            }
+        }
+    },
+
+    "block_extraction_rules": {
+        "name_extraction": {
+            "from_block_name": true,
+            "from_attrib_text": true,
+            "from_nearby_text": true,
+            "text_search_radius": 500.0,
+            "prefer_attrib": true
+        },
+
+        "attribute_keys": [
+            "NAME", "名称", "型号", "TYPE", "MODEL",
+            "TAG", "编号", "TAGNO", "标签",
+            "DESC", "说明", "DESCRIPTION",
+            "SIZE", "规格", "尺寸"
+        ],
+
+        "text_search": {
+            "search_radius": 300.0,
+            "max_texts_to_check": 10,
+            "prefer_below": true,
+            "prefer_right": true
+        }
+    },
+
     "validation_thresholds": {
         "min_cable_length": 0.1,
-        "max_cable_length": 10000.0,
+        "max_cable_length": 100000.0,
         "min_device_distance": 0.01,
-        "max_device_distance": 1000.0,
+        "max_device_distance": 10000.0,
         "layer_tolerance": 0.001,
-        "quantity_tolerance": 0.01
+        "quantity_tolerance": 0.01,
+
+        "min_confidence_device": 0.3,
+        "min_confidence_cable": 0.3,
+        "min_confidence_trunking": 0.4,
+
+        "max_devices_per_block": 50,
+        "max_cable_groups": 200,
+        "max_lines_per_layer": 5000
     },
+
     "quantity_rules": {
         "device_count": {
             "unit": "个",
@@ -156,13 +509,7 @@
             "description": "辅材数量计算"
         }
     },
-    "layer_mapping": {
-        "设备层": ["设备", "装置", "器具", "柜", "箱"],
-        "电缆层": ["电缆", "电线", "导线", "线缆"],
-        "桥架层": ["桥架", "线槽", "线槽架"],
-        "配管层": ["配管", "管道", "线管"],
-        "文字标注": ["文字", "标注", "说明"]
-    },
+
     "material_specifications": {
         "cables": {
             "BV": {"type": "power", "core_count": 1, "unit_weight": 0.01, "description": "铜芯塑料绝缘线"},
@@ -176,15 +523,22 @@
             "SC20": {"outer_diameter": 26.8, "wall_thickness": 2.0},
             "SC25": {"outer_diameter": 33.5, "wall_thickness": 2.5},
             "SC32": {"outer_diameter": 42.2, "wall_thickness": 2.5},
+            "SC50": {"outer_diameter": 60.0, "wall_thickness": 3.0},
+            "SC80": {"outer_diameter": 88.5, "wall_thickness": 4.0},
+            "SC100": {"outer_diameter": 114.0, "wall_thickness": 4.5},
             "PVC20": {"outer_diameter": 20.0, "wall_thickness": 1.5},
-            "PVC25": {"outer_diameter": 25.0, "wall_thickness": 1.8}
+            "PVC25": {"outer_diameter": 25.0, "wall_thickness": 1.8},
+            "PVC32": {"outer_diameter": 32.0, "wall_thickness": 2.0}
         },
         "trunking": {
+            "100x50": {"width": 0.1, "height": 0.05, "capacity": 0.005},
             "200x100": {"width": 0.2, "height": 0.1, "capacity": 0.02},
             "300x150": {"width": 0.3, "height": 0.15, "capacity": 0.045},
-            "400x200": {"width": 0.4, "height": 0.2, "capacity": 0.08}
+            "400x200": {"width": 0.4, "height": 0.2, "capacity": 0.08},
+            "600x200": {"width": 0.6, "height": 0.2, "capacity": 0.12}
         }
     },
+
     "cost_rates": {
         "labor_rate": 180.0,
         "material_rate": 1.0,
@@ -192,6 +546,7 @@
         "management_rate": 0.15,
         "profit_rate": 0.08
     },
+
     "unit_prices": {
         "cabinet": 5000.0,
         "distribution_box": 800.0,
@@ -202,8 +557,9 @@
         "cable_power": 100.0,
         "cable_control": 50.0,
         "cable_signal": 30.0,
+        "cable_communication": 20.0,
         "trunking": 300.0,
-        "pipe": 150.0,
+        "pipe": 50.0,
         "cable_terminal": 50.0,
         "wiring_terminal": 5.0,
         "other": 100.0

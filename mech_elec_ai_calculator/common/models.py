@@ -72,6 +72,7 @@ class LayerInfo(BaseModel):
     line_type: Optional[str] = Field(None, description="线型")
     visible: bool = Field(True, description="是否可见")
     locked: bool = Field(False, description="是否锁定")
+    category: Optional[str] = Field(None, description="图层分类（设备/线缆/桥架等）")
 
 class BlockInfo(BaseModel):
     name: str = Field(..., description="图块名称")
@@ -79,6 +80,7 @@ class BlockInfo(BaseModel):
     rotation: float = Field(0.0, description="旋转角度")
     scale: float = Field(1.0, description="缩放比例")
     attributes: Dict[str, Any] = Field(default_factory=dict, description="图块属性")
+    layer: Optional[str] = Field(None, description="所在图层")
 
 class LineInfo(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()), description="线条唯一标识")
@@ -111,6 +113,7 @@ class DrawingData(BaseModel):
     devices: List[DeviceModel] = Field(default_factory=list, description="识别到的设备")
     cables: List[CableModel] = Field(default_factory=list, description="识别到的线缆")
     trunkings: List[Dict[str, Any]] = Field(default_factory=list, description="识别到的桥架")
+    attributes: Dict[str, Any] = Field(default_factory=dict, description="识别摘要")
     created_at: datetime = Field(default_factory=datetime.now)
     parsed_at: Optional[datetime] = Field(None, description="解析时间")
 

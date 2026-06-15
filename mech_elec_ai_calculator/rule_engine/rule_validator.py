@@ -6,7 +6,6 @@ class RuleValidator:
         'reserve_lengths',
         'correction_factors',
         'device_classification',
-        'block_matching',
         'validation_thresholds',
         'quantity_rules'
     ]
@@ -16,7 +15,9 @@ class RuleValidator:
         self._validate_reserve_lengths(rules.get('reserve_lengths', {}))
         self._validate_correction_factors(rules.get('correction_factors', {}))
         self._validate_device_classification(rules.get('device_classification', {}))
-        self._validate_block_matching(rules.get('block_matching', {}))
+        # block_matching 为可选部分
+        if 'block_matching' in rules:
+            self._validate_block_matching(rules.get('block_matching', {}))
         self._validate_validation_thresholds(rules.get('validation_thresholds', {}))
         self._validate_quantity_rules(rules.get('quantity_rules', {}))
         return True
@@ -43,10 +44,8 @@ class RuleValidator:
         if not isinstance(classification, dict):
             raise RuleEngineError("Device classification must be a dictionary")
         
-        valid_types = ['cabinet', 'equipment', 'distribution_box', 'switch', 'socket', 'lighting', 'other']
+        # 动态检查：device_type字段存在即可，不限制具体类型名称
         for device_type, config in classification.items():
-            if device_type not in valid_types:
-                raise RuleEngineError(f"Invalid device type: {device_type}")
             if 'keywords' not in config or not isinstance(config['keywords'], list):
                 raise RuleEngineError(f"Missing or invalid keywords for device type '{device_type}'")
     
